@@ -11,7 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.penny.ui.screens.SignUp
+import com.example.penny.ui.screens.SignUpScreen
+import com.example.penny.ui.screens.SignUpScreen
 import com.example.penny.ui.theme.PennyTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PennyTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUp(
+                    SignUpScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
