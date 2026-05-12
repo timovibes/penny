@@ -249,7 +249,9 @@ fun SignUpScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = isChecked //the button is greyed out until the checkbox is checeked
+
                 ) {
                     Text(
                         text = "Create Account",
