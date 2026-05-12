@@ -1,103 +1,65 @@
 package com.example.penny.ui.screens
 
-import android.R.attr.text
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextObfuscationMode
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.rounded.AccountBalanceWallet
-import androidx.compose.material.icons.rounded.Email
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.penny.R
-import java.nio.file.WatchEvent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-
-
 
 @Composable
-fun SignUpScreen(
+fun SignInScreen(
     modifier: Modifier = Modifier,
-    onLoginClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+
 
     /*
      * VIEWMODEL HOOKUP (future):
-     *   uiState: SignUpUiState,
-     *   onNameChange: (String) -> Unit,
+     *   uiState: SignInUiState,
      *   onEmailChange: (String) -> Unit,
      *   onPasswordChange: (String) -> Unit,
-     *   onCheckedChange: (Boolean) -> Unit,
+     *   onSignInClick: () -> Unit,
      *   onSignUpClick: () -> Unit,
-     *   onLoginClick: () -> Unit,
+     *   onForgotPasswordClick: () -> Unit,
      */
 
 ) {
 
     // ─── LOCAL PLACEHOLDER STATES ──────────────────────────────────────────────
-    // Switched from rememberTextFieldState() to plain String state.
-    // This API (value + onValueChange) works with singleLine, visualTransformation,
-    // and is also the easiest to swap with ViewModel state later.
+    // DELETE these when you connect the ViewModel and use ViewModel state instead.
 
-    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     // Controls whether the password is shown or hidden
     var passwordVisible by remember { mutableStateOf(false) }
-
-    // Controls the Terms & Conditions checkbox
-    var isChecked by remember { mutableStateOf(false) }
     // ──────────────────────────────────────────────────────────────────────────
 
 
@@ -117,13 +79,13 @@ fun SignUpScreen(
             modifier = Modifier.padding(bottom = 32.dp)
         ) {
             Text(
-                text = "Start your journey with us!",
+                text = "Welcome back!",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "Manage your finances with ease",
+                text = "Sign in to continue",
                 style = MaterialTheme.typography.titleMedium,
                 fontStyle = FontStyle.Italic,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -142,26 +104,6 @@ fun SignUpScreen(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-
-                // ── FULL NAME FIELD ──────────────────────────────────────────
-                // VIEWMODEL HOOKUP:
-                //   value = uiState.name,
-                //   onValueChange = { onNameChange(it) }
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Full name") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = null)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    ),
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp)
-                )
 
                 // ── EMAIL FIELD ──────────────────────────────────────────────
                 // VIEWMODEL HOOKUP:
@@ -209,7 +151,6 @@ fun SignUpScreen(
                             )
                         }
                     },
-                    // Hides or shows the password text based on the toggle
                     visualTransformation = if (passwordVisible)
                         VisualTransformation.None
                     else
@@ -222,37 +163,31 @@ fun SignUpScreen(
                     shape = RoundedCornerShape(12.dp)
                 )
 
-                // ── TERMS CHECKBOX ROW ───────────────────────────────────────
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = { isChecked = it }
-                        // VIEWMODEL HOOKUP:
-                        //   checked = uiState.isTermsAccepted,
-                        //   onCheckedChange = { onCheckedChange(it) }
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "I agree to the Terms of Service and Privacy Policy",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                // ── FORGOT PASSWORD ──────────────────────────────────────────
+                // Aligned to the right, below the password field
+                Text(
+                    text = "Forgot password?",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .clickable {
+                            // VIEWMODEL HOOKUP: onForgotPasswordClick()
+                        }
+                )
 
-                // ── SIGN UP BUTTON ───────────────────────────────────────────
-                // VIEWMODEL HOOKUP: onClick = { onSignUpClick() }
+                // ── SIGN IN BUTTON ───────────────────────────────────────────
+                // VIEWMODEL HOOKUP: onClick = { onSignInClick() }
                 Button(
-                    onClick = { /* VIEWMODEL HOOKUP: onSignUpClick() */ },
+                    onClick = { /* VIEWMODEL HOOKUP: onSignInClick() */ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "Create Account",
+                        text = "Sign In",
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
@@ -261,24 +196,24 @@ fun SignUpScreen(
         // ──────────────────────────────────────────────────────────────────────
 
 
-        // ─── LOGIN REDIRECT ───────────────────────────────────────────────────
+        // ─── SIGNUP REDIRECT ──────────────────────────────────────────────────
         Spacer(modifier = Modifier.height(20.dp))
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Already have an account? ",
+                text = "Don't have an account? ",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Log in",
+                text = "Sign up",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable {
-                    onLoginClick()
+                    onSignUpClick()
                 }
             )
         }

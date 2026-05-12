@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.penny.ui.navigation.AppNavGraph
 import com.example.penny.ui.screens.SignUpScreen
 import com.example.penny.ui.screens.SignUpScreen
 import com.example.penny.ui.theme.PennyTheme
@@ -21,11 +23,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PennyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                val navController = rememberNavController()
+                AppNavGraph(navController = navController)
             }
         }
     }
