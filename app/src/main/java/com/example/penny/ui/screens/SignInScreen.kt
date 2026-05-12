@@ -115,7 +115,11 @@ fun SignInScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Email address") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -135,11 +139,15 @@ fun SignInScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Password") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
+                                tint = MaterialTheme.colorScheme.primary,
                                 imageVector = if (passwordVisible)
                                     Icons.Default.VisibilityOff
                                 else
@@ -184,7 +192,11 @@ fun SignInScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 ) {
                     Text(
                         text = "Sign In",

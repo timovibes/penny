@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -70,6 +71,8 @@ import androidx.compose.runtime.setValue
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
+    onTermsClick: () -> Unit,
+    onPrivacyClick: () -> Unit
 
     /*
      * VIEWMODEL HOOKUP (future):
@@ -153,7 +156,11 @@ fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Full name") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
@@ -173,7 +180,11 @@ fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Email address") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -193,11 +204,15 @@ fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Password") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
+                                tint = MaterialTheme.colorScheme.primary,
                                 imageVector = if (passwordVisible)
                                     Icons.Default.VisibilityOff
                                 else
@@ -235,11 +250,38 @@ fun SignUpScreen(
                         //   onCheckedChange = { onCheckedChange(it) }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "I agree to the Terms of Service and Privacy Policy",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+
+                    ) {
+                        Text(
+                            text = "I agree to the ",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            modifier = Modifier.clickable{
+                                onTermsClick()
+                            },
+                            text = "Terms of Service ",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "and ",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            modifier = Modifier
+                                .clickable{
+                                    onPrivacyClick()
+                                },
+                            text = "Privacy Policy",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
                 }
 
                 // ── SIGN UP BUTTON ───────────────────────────────────────────
@@ -250,6 +292,10 @@ fun SignUpScreen(
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
                     enabled = isChecked //the button is greyed out until the checkbox is checeked
 
                 ) {
