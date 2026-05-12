@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.penny.ui.screens.PrivacyPolicyScreen
 import com.example.penny.ui.screens.SignInScreen
 import com.example.penny.ui.screens.SignUpScreen
+import com.example.penny.ui.screens.TermsOfServiceScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -22,9 +24,25 @@ fun AppNavGraph(navController: NavHostController) {
 
         composable("signup") {
             SignUpScreen(
-                onLoginClick = { navController.navigate("signin") }
+                onLoginClick = { navController.navigate("signin") },
+                onTermsClick = { navController.navigate("terms") },
+                onPrivacyClick = { navController.navigate("privacy") }
             )
         }
+
+        composable("terms") {
+            TermsOfServiceScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("privacy") {
+            PrivacyPolicyScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+
 
     }
 }
