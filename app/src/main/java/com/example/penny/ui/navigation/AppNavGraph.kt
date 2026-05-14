@@ -1,13 +1,18 @@
 package com.example.penny.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.penny.ui.screens.HomeScreen
 import com.example.penny.ui.screens.PrivacyPolicyScreen
 import com.example.penny.ui.screens.SignInScreen
 import com.example.penny.ui.screens.SignUpScreen
 import com.example.penny.ui.screens.TermsOfServiceScreen
+import com.example.penny.viewmodel.SignInViewModel
+import com.example.penny.viewmodel.SignUpViewModel
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -17,16 +22,37 @@ fun AppNavGraph(navController: NavHostController) {
     ) {
 
         composable("signin") {
+            val viewModel: SignInViewModel = viewModel()
             SignInScreen(
-                onSignUpClick = { navController.navigate("signup") }
+                email = viewModel.email.collectAsState().value,
+                password = viewModel.password.collectAsState().value,
+                authState = viewModel.authState.collectAsState().value,
+                onEmailChange = viewModel::onEmailChange,
+                onPasswordChange = viewModel::onPasswordChange,
+                onSignInClick = viewModel::signIn,
+                onForgotPasswordClick = viewModel::forgotPassword,
+                onSignUpClick = { navController.navigate("signup") },
+                onSignInSuccess = { navController.navigate("home") }
             )
         }
 
         composable("signup") {
+            val viewModel: SignUpViewModel = viewModel()
             SignUpScreen(
+                name = viewModel.name.collectAsState().value,
+                email = viewModel.email.collectAsState().value,
+                password = viewModel.password.collectAsState().value,
+                isTermsAccepted = viewModel.isTermsAccepted.collectAsState().value,
+                authState = viewModel.authState.collectAsState().value,
+                onNameChange = viewModel::onNameChange,
+                onEmailChange = viewModel::onEmailChange,
+                onPasswordChange = viewModel::onPasswordChange,
+                onTermsCheckedChange = viewModel::onTermsCheckedChange,
+                onSignUpClick = viewModel::signUp,
                 onLoginClick = { navController.navigate("signin") },
                 onTermsClick = { navController.navigate("terms") },
-                onPrivacyClick = { navController.navigate("privacy") }
+                onPrivacyClick = { navController.navigate("privacy") },
+                onSignUpSuccess = { navController.navigate("home") }
             )
         }
 
@@ -42,7 +68,9 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
 
-
+        composable("home") {
+            HomeScreen()
+        }
 
     }
 }

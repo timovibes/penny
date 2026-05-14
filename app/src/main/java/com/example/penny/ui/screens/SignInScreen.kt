@@ -28,40 +28,40 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.penny.data.AuthResult
 
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
+    email: String,
+    password: String,
+    authState: AuthResult?,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignInClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     onSignUpClick: () -> Unit,
-
-
-    /*
-     * VIEWMODEL HOOKUP (future):
-     *   uiState: SignInUiState,
-     *   onEmailChange: (String) -> Unit,
-     *   onPasswordChange: (String) -> Unit,
-     *   onSignInClick: () -> Unit,
-     *   onSignUpClick: () -> Unit,
-     *   onForgotPasswordClick: () -> Unit,
-     */
-
+    onSignInSuccess: () -> Unit
 ) {
-
-    // ─── LOCAL PLACEHOLDER STATES ──────────────────────────────────────────────
-    // DELETE these when you connect the ViewModel and use ViewModel state instead.
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     // Controls whether the password is shown or hidden
     var passwordVisible by remember { mutableStateOf(false) }
     // ──────────────────────────────────────────────────────────────────────────
 
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthResult.Success -> onSignInSuccess()
+            is AuthResult.Error -> { /* error message handled below */ }
+            else -> Unit
+        }
+    }
 
     Column(
         modifier = modifier
@@ -111,7 +111,7 @@ fun SignInScreen(
                 //   onValueChange = { onEmailChange(it) }
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = {onEmailChange(it) },
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Email address") },
                     leadingIcon = {
@@ -135,7 +135,7 @@ fun SignInScreen(
                 //   onValueChange = { onPasswordChange(it) }
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = {onPasswordChange(it)},
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Password") },
                     leadingIcon = {
@@ -181,14 +181,14 @@ fun SignInScreen(
                     modifier = Modifier
                         .align(Alignment.End)
                         .clickable {
-                            // VIEWMODEL HOOKUP: onForgotPasswordClick()
+                            onForgotPasswordClick()
                         }
                 )
 
                 // ── SIGN IN BUTTON ───────────────────────────────────────────
                 // VIEWMODEL HOOKUP: onClick = { onSignInClick() }
                 Button(
-                    onClick = { /* VIEWMODEL HOOKUP: onSignInClick() */ },
+                    onClick = {onSignInClick()},
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),

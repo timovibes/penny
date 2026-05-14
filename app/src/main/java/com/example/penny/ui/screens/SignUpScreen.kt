@@ -42,6 +42,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -64,37 +65,28 @@ import com.example.penny.R
 import java.nio.file.WatchEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-
+import com.example.penny.data.AuthResult
 
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
+    name: String,
+    email: String,
+    password: String,
+    isTermsAccepted: Boolean,
+    authState: AuthResult?,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onTermsCheckedChange: (Boolean) -> Unit,
+    onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit,
     onTermsClick: () -> Unit,
-    onPrivacyClick: () -> Unit
-
-    /*
-     * VIEWMODEL HOOKUP (future):
-     *   uiState: SignUpUiState,
-     *   onNameChange: (String) -> Unit,
-     *   onEmailChange: (String) -> Unit,
-     *   onPasswordChange: (String) -> Unit,
-     *   onCheckedChange: (Boolean) -> Unit,
-     *   onSignUpClick: () -> Unit,
-     *   onLoginClick: () -> Unit,
-     */
-
+    onPrivacyClick: () -> Unit,
+    onSignUpSuccess: () -> Unit
 ) {
 
-    // ─── LOCAL PLACEHOLDER STATES ──────────────────────────────────────────────
-    // Switched from rememberTextFieldState() to plain String state.
-    // This API (value + onValueChange) works with singleLine, visualTransformation,
-    // and is also the easiest to swap with ViewModel state later.
-
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     // Controls whether the password is shown or hidden
     var passwordVisible by remember { mutableStateOf(false) }
@@ -103,6 +95,14 @@ fun SignUpScreen(
     var isChecked by remember { mutableStateOf(false) }
     // ──────────────────────────────────────────────────────────────────────────
 
+
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthResult.Success -> onSignUpSuccess()
+            is AuthResult.Error -> { /* error message handled below */ }
+            else -> Unit
+        }
+    }
 
     Column(
         modifier = modifier
@@ -152,7 +152,7 @@ fun SignUpScreen(
                 //   onValueChange = { onNameChange(it) }
                 OutlinedTextField(
                     value = name,
-                    onValueChange = { name = it },
+                    onValueChange = {onNameChange(it)},
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Full name") },
                     leadingIcon = {
@@ -176,7 +176,7 @@ fun SignUpScreen(
                 //   onValueChange = { onEmailChange(it) }
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = {onEmailChange(it)},
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Email address") },
                     leadingIcon = {
@@ -200,7 +200,7 @@ fun SignUpScreen(
                 //   onValueChange = { onPasswordChange(it) }
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = {onPasswordChange(it)},
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Password") },
                     leadingIcon = {
@@ -287,7 +287,7 @@ fun SignUpScreen(
                 // ── SIGN UP BUTTON ───────────────────────────────────────────
                 // VIEWMODEL HOOKUP: onClick = { onSignUpClick() }
                 Button(
-                    onClick = { /* VIEWMODEL HOOKUP: onSignUpClick() */ },
+                    onClick = {onSignUpClick()},
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
